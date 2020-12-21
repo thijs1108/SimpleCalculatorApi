@@ -1,6 +1,7 @@
 package nl.thijsbeltman.simplecalculator.web.rest;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import nl.thijsbeltman.simplecalculator.web.rest.dto.CalculationDto;
 import org.hamcrest.CoreMatchers;
 import org.hamcrest.core.Is;
 import org.junit.jupiter.api.BeforeEach;
@@ -45,26 +46,30 @@ class CalculationControllerTest {
                 .andReturn().getResponse();
 
         assertThat(response.getStatus(), CoreMatchers.is(200));
-        assertThat(response.getContentAsString(), Is.is("[\"abc\",\"def\"]"));
+        assertThat(response.getContentAsString(), CoreMatchers.containsString("\"secondNumber\":2,"));
     }
 
     @Test
     public void testPostCalculations() throws Exception {
         //given
-        List<String> stringsContent = Arrays.asList("test123","test456");
+        CalculationDto dto = new CalculationDto();
+        dto.setFirstNumber(1);
+        dto.setSecondNumber(2);
+        dto.setOperator("ADDITION");
+        List<CalculationDto> dtos = Arrays.asList(dto);
 
         //when
         final ObjectMapper objectMapper = new Jackson2ObjectMapperBuilder().build();
         MockHttpServletResponse response = mockMvc.perform(
                 post("/calculations")
-                        .content(objectMapper.writeValueAsString(stringsContent))
+                        .content(objectMapper.writeValueAsString(dtos))
                         .contentType(MediaType.APPLICATION_JSON)
                         .accept(MediaType.APPLICATION_JSON))
                 .andReturn().getResponse();
 
         //asert
         assertThat(response.getStatus(), CoreMatchers.is(HttpStatus.CREATED.value()));
-        assertThat(response.getContentAsString(), Is.is("[\"test123\",\"test456\"]"));
+        assertThat(response.getContentAsString(), CoreMatchers.containsString("\"secondNumber\":2"));
 
     }
 
