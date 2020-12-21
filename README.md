@@ -7,11 +7,8 @@ Simple Calculator Aegon Assessment
 Use docker to start a postgres database
 
 ```bash
-docker run -d \
-    --name postgres-simple-Calculator \
-    -e POSTGRES_PASSWORD=correcthorsebatterystaple \
-    postgres
+docker-compose -f postgres-stack.yml  up
 ```
 
-Use the same password in src/main/resources/application.properties
+Use the same password in postgres-stack as in src/main/resources/application.properties
 
