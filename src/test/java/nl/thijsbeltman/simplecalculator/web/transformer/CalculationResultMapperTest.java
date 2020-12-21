@@ -1,16 +1,13 @@
 package nl.thijsbeltman.simplecalculator.web.transformer;
 
-import nl.thijsbeltman.simplecalculator.model.Calculation;
 import nl.thijsbeltman.simplecalculator.model.CalculationResult;
 import nl.thijsbeltman.simplecalculator.model.Operator;
 import nl.thijsbeltman.simplecalculator.web.rest.dto.CalculationResultDto;
-import nl.thijsbeltman.simplecalculator.web.rest.dto.OperatorDto;
 import org.junit.jupiter.api.Test;
 import org.hamcrest.core.Is;
 
 
 import static org.hamcrest.MatcherAssert.assertThat;
-import static org.junit.jupiter.api.Assertions.*;
 
 class CalculationResultMapperTest {
 
