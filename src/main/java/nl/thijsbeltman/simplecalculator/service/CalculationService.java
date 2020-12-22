@@ -62,9 +62,6 @@ public class CalculationService {
             case DIVISION:
                 result.setResult(simpleCalculator.divide(result.getFirstNumber(), result.getSecondNumber()));
                 break;
-            default:
-                log.error("Cant calculate {} for calculation {}", result.getOperator(), calculation);
-                throw new IllegalArgumentException("Incorrect operator");
         }
         return result;
     }

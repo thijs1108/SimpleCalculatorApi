@@ -3,6 +3,7 @@ package nl.thijsbeltman.simplecalculator.service;
 import nl.thijsbeltman.simplecalculator.model.Calculation;
 import nl.thijsbeltman.simplecalculator.model.CalculationResult;
 import nl.thijsbeltman.simplecalculator.model.Operator;
+import nl.thijsbeltman.simplecalculator.repository.CalculationResultRepository;
 import nl.thijsbeltman.simplecalculator.service.util.SimpleCalculator;
 import org.hamcrest.core.Is;
 import org.junit.jupiter.api.Test;
@@ -21,6 +22,8 @@ import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyInt;
 import static org.mockito.BDDMockito.given;
+import static org.mockito.Mockito.times;
+import static org.mockito.Mockito.verify;
 
 @ExtendWith(MockitoExtension.class)
 class CalculationServiceTest {
@@ -30,6 +33,9 @@ class CalculationServiceTest {
 
     @Mock
     private SimpleCalculator simpleCalculator;
+
+    @Mock
+    private CalculationResultRepository repository;
 
     @Test
     public void runCalculationsShouldReturnResults(){
@@ -55,7 +61,28 @@ class CalculationServiceTest {
         assertThat(actual.get(1).getResult(), Is.is(8.0));
         assertThat(actual.get(2).getResult(), Is.is(8.0));
         assertThat(actual.get(3).getResult(), Is.is(3.0));
+        verify(repository, times(4)).save(any(CalculationResult.class));
+    }
 
+    @Test
+    public void getCalculationsShouldReturnCalculationHistory(){
+        //given
+        CalculationResult result1 = new CalculationResult(1.0);
+        result1.setFirstNumber(2);
+        result1.setSecondNumber(4);
+        result1.setOperator(Operator.MULTIPLICATION);
+        CalculationResult result2 = new CalculationResult(5.0);
+        result2.setFirstNumber(6);
+        result2.setSecondNumber(8);
+        result2.setOperator(Operator.DIVISION);
+        List<CalculationResult> results = Arrays.asList(result1, result2);
+        given(repository.findAll()).willReturn(results);
+
+        //when
+        Collection<CalculationResult> actualCalculations = calculationService.getCalculations();
+
+        //assert
+        assertThat(actualCalculations, Is.is(results));
     }
 
 }
