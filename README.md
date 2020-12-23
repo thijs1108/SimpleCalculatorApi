@@ -11,6 +11,6 @@ The Api expects an postgres application running on `localhost` port `5432`. If y
 
 ## Api
 The api handles the frontend calls and persistance to the database. 
-1. Open the project in your IDE
-2. Run the `main` method in `SimplecalculatorApplication`.
+1. Ensure you have maven properly installed and a posgres database listening on `localhost:5321`
+2. Run $ `mvn spring-boot:run` 
 3. The api is now running on `localhost:8080` with context path `/api`
